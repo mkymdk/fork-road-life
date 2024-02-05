@@ -15,6 +15,12 @@
 import streamlit as st
 from streamlit.logger import get_logger
 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import plotly.express as px
+import scipy.stats as stats
+
 LOGGER = get_logger(__name__)
 
 
