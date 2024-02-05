@@ -21,37 +21,11 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 import scipy.stats as stats
 
-LOGGER = get_logger(__name__)
+# アプリのタイトルと説明を表示
+st.title("人生の羅針盤")
+st.markdown("金融情報を入力すると、最適なライフプランを提案してくれるアプリです。")
 
-
-def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
-
-    st.write("# Welcome to Streamlit! 👋")
-
-    st.sidebar.success("Select a demo above.")
-
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
-
-
-if __name__ == "__main__":
-    run()
+# サイドバーに金融情報の入力欄を作成
+st.sidebar.header("金融情報の入力")
+# 年収の入力
+income = st.sidebar.number_input("年収（万円）", min_value=0, max_value=10000, value=500, step=10)
