@@ -105,29 +105,33 @@ if st.button("シミュレーションを実行"):
         for j in range(years):
             loan_sim.append(loan_sim[-1] * (1 + interest_rate_sim[j]/100) - loan*0.1)
         # シミュレーションの結果をDataFrameに追加
-        df[f"trial_{i+1}"] = savings_sim - loan_sim
-        # シミュレーションの結果の平均と標準偏差を計算
-        df["mean"] = df.mean(axis=1)
-        df["std"] = df.std(axis=1)
+        df[f"trial_{i+1}"] = np.array(savings_sim) - np.array(loan_sim)
 
-        # シミュレーションの結果をプロットする
-        fig = px.line(df, x=df.index, y="mean", error_y="std", labels={"index": "年数", "mean": "貯金とローンの差額（万円）"})
-        st.plotly_chart(fig)
+    # シミュレーションの結果の平均と標準偏差を計算
+    df["mean"] = df.mean(axis=1)
+    df["std"] = df.std(axis=1)
+    df
 
-        # シミュレーションの結果の要約を表示する
-        st.subheader("シミュレーションの結果の要約")
-        st.write(f"シミュレーションの期間：{years}年")
-        st.write(f"シミュレーションの回数：{trials}回")
-        st.write(f"初期の貯金とローンの差額：{savings - loan}万円")
-        st.write(f"最終的な貯金とローンの差額の平均：{df['mean'].iloc[-1]:.2f}万円")
-        st.write(f"最終的な貯金とローンの差額の標準偏差：{df['std'].iloc[-1]:.2f}万円")
+    # シミュレーションの結果をプロットする
+    fig = px.line(df, x=df.index, y="mean", error_y="std", labels={"index": "年数", "mean": "貯金とローンの差額（万円）"})
+    st.plotly_chart(fig)
 
-        # 最適なライフプランを提案する
-        st.header("最適なライフプランの提案")
-        # 最適なライフプランを決めるための基準を入力
-        target = st.number_input("目標とする貯金とローンの差額（万円）", min_value=0, max_value=100000, value=10000, step=10)
-        probability = st.slider("目標を達成する確率（％）", min_value=0.0, max_value=100.0, value=90.0, step=0.1)
+    # シミュレーションの結果の要約を表示する
+    st.subheader("シミュレーションの結果の要約")
+    st.write(f"シミュレーションの期間：{years}年")
+    st.write(f"シミュレーションの回数：{trials}回")
+    st.write(f"初期の貯金とローンの差額：{savings - loan}万円")
+    st.write(f"最終的な貯金とローンの差額の平均：{df['mean'].iloc[-1]:.2f}万円")
+    st.write(f"最終的な貯金とローンの差額の標準偏差：{df['std'].iloc[-1]:.2f}万円")
 
+    # 最適なライフプランを提案する
+    st.header("最適なライフプランの提案")
+    # 最適なライフプランを決めるための基準を入力
+    target = st.number_input("目標とする貯金とローンの差額（万円）", min_value=0, max_value=100000, value=10000, step=10)
+    probability = st.slider("目標を達成する確率（％）", min_value=0.0, max_value=100.0, value=90.0, step=0.1)
+
+    # 最適なライフプランを計算ボタンを作成
+    if st.button("最適なライフプランを計算"):
         # 目標を達成するために必要な年数を計算
         # 目標を達成する確率に対応するパーセンタイルを求める
         percentile = 100 - (100 - probability) / 2
